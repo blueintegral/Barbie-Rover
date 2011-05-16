@@ -1,0 +1,62 @@
+//Arduino code 
+
+#include <Servo.h>
+
+//First, set up the servos
+Servo servo1;
+Servo servo2;
+
+int debugPin = 13; // used for an led to test stuff
+int motor1Pin = 9; // the first motor's port number
+int motor2Pin = 10; // the second motor's port number
+int usbnumber = 0; //this variable holds what we are currently reading from serial
+
+
+void setup() { //call this once at the beginning
+    pinMode(motor1Pin, OUTPUT); 
+    pinMode(debugPin, OUTPUT); 
+    pinMode(motor2Pin, OUTPUT);	
+    servo1.attach(motor1Pin,1000,2000); 
+    servo2.attach(motor2Pin,1000,2000);   
+    Serial.begin(9600); //start up serial port
+}
+
+void loop() { //main loop
+    if (Serial.available() > 0) { //if there is anything on the serial port, read it
+        usbnumber = Serial.read(); //store it in the usbnumber variable
+    }
+
+    if (usbnumber > 0) { //if we read something
+        if (usbnumber == 49){
+             servo1.write(93);
+             servo2.write(93);//if we read a 1, stop
+             analogWrite(debugPin, 0);
+			}
+	if (usbnumber == 50){
+	      servo1.write(120);
+             servo2.write(120); //if we read a 2, slow
+              analogWrite(debugPin, 85);
+			}
+        if (usbnumber == 51){
+            servo1.write(150);
+             servo2.write(150); //if we read a 3, medium
+            analogWrite(debugPin, 170);
+			}
+        if (usbnumber == 52){
+             servo1.write(179);
+             servo2.write(179); //if we read a 4, fast
+            analogWrite(debugPin, 255);
+			}
+        if (usbnumber == 53){
+            servo1.write(130);
+             servo2.write(50); //if we read a 5, right
+            analogWrite(debugPin, 255);
+			}
+         if (usbnumber == 54){
+            servo1.write(50);
+             servo2.write(130); //if we read a 6, left
+            analogWrite(debugPin, 255);
+			} 
+		}
+        usbnumber = 0; //reset
+	}
