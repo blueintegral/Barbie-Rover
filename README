@@ -1,0 +1,24 @@
+README
+
+------------------------
+Barbie Web Rover Project
+------------------------
+
+Current version: 0.5
+
+Change log:
+-----------
+
+0.5 - Released
+***************
+
+Notes:
+------
+	This code is only designed to work with Linux. I have only tested it under Ubuntu 9.04. It WON'T work under Windows because "demo.php" uses fopen() to send serial data. If someone wants to write a version that will work under Windows, feel free. Just let me know and I will post it on the site.
+	This zipped file should have contained 3 files: a "README.txt", "Arduino_code.txt" and "demo.php". To install, copy and paste the code from "Arduino_code.txt" into the Arduino environment and upload it. Then put "demo.php" in your webserver folder (/var/www) and open it with a browser. Note that I have only tested "demo.php" in Firefox and can't guarantee that it works with other browsers. 
+	Then make sure that you have your Arduino connected via USB to your Linux machine and you should be good to go. This code has the Arduino outputting on ports 9 and 10 so plug your servos in there. 
+
+You can redistribute, modify, or alter this code in any way that you want, just please keep the comments at the top intact (and it would be helpful if you appended them if you change and then redistribute it).
+
+
+	
