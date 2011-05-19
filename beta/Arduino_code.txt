@@ -1,0 +1,141 @@
+#include <MegaServo.h>
+
+//Arduino code 
+
+//First, set up the servos
+MegaServo servo1; //motor 1
+MegaServo servo2; //motor 2
+MegaServo servo3; //rocket tube
+MegaServo servo4; //camera
+MegaServo servo5; //aux 1, rocket fire
+MegaServo servo6; //aux 2, nothing yet
+
+int debugPin = 13; // used for an LED to test stuff
+int motor1Pin = 9; // the first motor's port number
+int motor2Pin = 10; // the second motor's port number
+int motor3Pin = 11; //3rd motor, the rocket tube.
+int motor4Pin = 12; //4th motor, the camera.
+int usbnumber = 0; //this variable holds what we are currently reading from serial
+int aux1Pin = 6; //aux 1, rocket ignitor (white banebots)
+int aux2Pin = 7; //aux 2, nothing yet (orange banebots)
+
+void setup() { //call this once at the beginning 
+    pinMode(debugPin, OUTPUT); 
+    servo1.attach(motor1Pin,1000,2000);  //This is where you specify the 
+    servo2.attach(motor2Pin,1000,2000);  //min and max pulse length for the servo (here mine is 1000ms for 
+    servo3.attach(motor3Pin,1000,2000); //make sure this is correct PWN for vex motor									//full reverse and 2000ms for full forward).
+    servo4.attach(motor4Pin,1000,2000);
+    servo5.attach(aux1Pin,1000,2000);
+    servo6.attach(aux1Pin,1000,2000);									//Check your motor controller specifications to get these numbers.
+    Serial.begin(9600); //start up serial port
+}
+
+void loop() { //main loop
+    if (Serial.available() > 0) { //if there is anything on the serial port, read it
+        usbnumber = Serial.read(); //store it in the usbnumber variable
+    } else {
+	Serial.println("Serial port not availible");
+} 
+
+    if (usbnumber > 0) { //if we read something
+        if (usbnumber == 49){
+             servo1.write(93);
+             servo2.write(93);//if we read a 1, stop
+             analogWrite(debugPin, 0);
+             Serial.println("Read a 1, stopping");
+	     
+			}
+	if (usbnumber == 50){
+	      servo1.write(120);
+             servo2.write(120); //if we read a 2, slow
+              analogWrite(debugPin, 85);
+	     Serial.println("Read a 2, going slow");
+			}
+        if (usbnumber == 51){
+            servo1.write(150);
+             servo2.write(150); //if we read a 3, medium
+            analogWrite(debugPin, 170);
+	    Serial.println("Read a 3, going medium");
+			}
+        if (usbnumber == 52){
+             servo1.write(179);
+             servo2.write(179); //if we read a 4, fast
+            analogWrite(debugPin, 255);
+	    Serial.println("Read a 4, going fast");
+			}
+        if (usbnumber == 53){
+            servo1.write(130);
+             servo2.write(50); //if we read a 5, right
+            analogWrite(debugPin, 255);
+ 	     Serial.println("Read a 5, going right");
+			}
+         if (usbnumber == 54){
+            servo1.write(50);
+             servo2.write(130); //if we read a 6, left
+            analogWrite(debugPin, 255);
+	    Serial.println("Read a 6, going left");
+			} 
+ 	if (usbnumber == 55){
+            servo1.write(50);
+             servo2.write(50); //if we read a 7, reverse slow
+            analogWrite(debugPin, 255);
+	    Serial.println("Read a 7, going reverse slow");
+			}
+
+ 	if (usbnumber == 56){
+            servo1.write(0);
+             servo2.write(0); //if we read a 8, reverse fast
+            analogWrite(debugPin, 255);
+	   Serial.println("Read an 8, going reverse fast");
+			}
+
+        if (usbnumber == 57){
+             servo3.write(179); //if we read a 9, rotate rocket tube fw
+            analogWrite(debugPin, 255);
+	   Serial.println("Read a 9, rotating rocket FW");			}
+
+        if (usbnumber == 97){ 
+             servo3.write(0); //if we read an 'a', rotate rocket tube bw
+            analogWrite(debugPin, 255);
+	    Serial.println("Read an a, rotating rocket tube BW");
+			}
+
+        if (usbnumber == 98){ 
+             servo3.write(90); //if we read an 'b', stop rocket tube
+            analogWrite(debugPin, 0);
+            
+	   Serial.println("Read a b, stopping rocket tube");
+			}
+
+        if (usbnumber == 99){ 
+             servo4.write(90); //if we read an 'c', rotate camera right
+            analogWrite(debugPin, 255);
+	    Serial.println("Read a c, rotating camera right");
+			}
+
+        if (usbnumber == 100){ 
+             servo4.write(90); //if we read an 'd', rotate camera left
+            analogWrite(debugPin, 255);
+	    Serial.println("Read a d, rotating camera left");
+			}
+
+        if (usbnumber == 101){ 
+             servo4.write(90); //if we read an 'e', stop camera
+            analogWrite(debugPin, 0);
+	   Serial.println("Read an e, stopping camera");
+			}
+        if (usbnumber == 102){ 
+             servo5.write(179); //if we read an 'f', fire rocket
+            analogWrite(debugPin, 0);
+	   Serial.println("Read an f, firing rocket");
+			}
+        if (usbnumber == 103){ 
+             servo5.write(90); //if we read an 'g', turn off rocket ignitor
+            analogWrite(debugPin, 0);
+	   Serial.println("Read a g, turning off ignitor");
+		}
+        }
+        usbnumber = 0; //reset
+	//Serial.println("Didn't recieve anything");
+	}
+
